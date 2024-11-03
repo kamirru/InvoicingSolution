@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("api/v1")
+@RequestMapping("api/v1/config")
 @RequiredArgsConstructor
 @Log4j2
 public class MerchantConfigController {
@@ -24,8 +24,10 @@ public class MerchantConfigController {
     private final RabbitTemplate rabbitTemplate;
 
     @PostMapping("/publish")
-    public String saveMerchantConfig(@RequestBody MerchantConfigRequest merchantConfigRequest) {
-        rabbitTemplate.convertAndSend("config-exchange", "config_routing_key", merchantConfigRequest);
+    public String saveMerchantConfig(@RequestBody MerchantConfigRequest merchantConfigRequest) throws JsonProcessingException {
+        ObjectMapper objectMapper = new ObjectMapper();
+        String s = objectMapper.writeValueAsString(merchantConfigRequest);
+        rabbitTemplate.convertAndSend("config-exchange", "config_routing_key", s);
         return "success";
     }
 

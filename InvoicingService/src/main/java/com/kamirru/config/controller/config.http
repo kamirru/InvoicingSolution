@@ -1,5 +1,5 @@
 ### add new config
-POST http://localhost:8080/api/v1/publish
+POST http://localhost:8080/api/v1/config/publish
 Content-Type: application/json
 
 {
