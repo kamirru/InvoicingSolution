@@ -1,0 +1,32 @@
+#https://rawcdn.githack.com/rabbitmq/rabbitmq-server/v4.0.3/deps/rabbitmq_management/priv/www/api/index.html
+
+### new vhost
+PUT http://localhost:15672/api/vhosts/merchant-config
+Authorization: Basic user password
+Content-Type: application/json
+
+### add exchange to vhost
+PUT http://localhost:15672/api/exchanges/merchant-config/config-exchange
+Authorization: Basic user password
+Content-Type: application/json
+
+{"type":"direct","auto_delete":false,"durable":true,"internal":false,"arguments":{}}
+
+### add queue to vhost
+PUT http://localhost:15672/api/queues/merchant-config/config-queue
+Authorization: Basic user password
+Content-Type: application/json
+
+{"auto_delete":false,"durable":true}
+
+
+### add routing key
+POST http://localhost:15672/api/bindings/merchant-config/e/config-exchange/q/config-queue
+Authorization: Basic user password
+Content-Type: application/json
+
+{"routing_key":"config_routing_key"}
+
+
+
+
